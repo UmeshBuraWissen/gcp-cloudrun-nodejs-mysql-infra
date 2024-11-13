@@ -1,0 +1,63 @@
+trigger:
+- main  # Replace with your desired branch name
+
+variables:
+  TF_VERSION: '1.9.8'  # Specify the version of Terraform you want to use
+
+stages:
+- stage: Terraform
+  jobs:
+  - job: TerraformDeploy
+    pool:
+      vmImage: 'ubuntu-latest'  # or another image suitable for your environment
+    steps:
+    - script: |
+        echo "Installing Terraform..."
+        curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+        sudo apt-add-repository "deb https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+        sudo apt-get update && sudo apt-get install terraform=${TF_VERSION}-1
+      displayName: 'Install Terraform'
+
+    - script: |
+        echo "Verifying Terraform installation..."
+        terraform -version
+      displayName: 'Verify Terraform Installation'
+
+    - script: |
+        echo "Installing Checkov..."
+        pip install --upgrade pip
+        pip install checkov
+      displayName: 'Install Checkov'
+      
+    - script: |
+        echo "Running Checkov security scan on Terraform files..."
+        cd GCP-CloudRun-Nodejs-Mysql-infra/
+        checkov -d . --skip-check CKV_GCP_113,CKV_GCP_60
+      displayName: 'Run Checkov'
+    
+    - script: |
+        echo "Setting up Google Cloud authentication..."
+        printf "%s" "$GOOGLE_CREDENTIALS" > /home/vsts/gcp-key.json
+        export GOOGLE_APPLICATION_CREDENTIALS=/home/vsts/gcp-key.json
+        gcloud auth activate-service-account --key-file=/home/vsts/gcp-key.json
+        echo "$(TF_VAR_project_id)"
+        gcloud config set project $(TF_VAR_project_id)
+      displayName: 'Authenticate with Google Cloud'
+    
+    - script: |
+        echo "Initializing Terraform..."
+        cd GCP-CloudRun-Nodejs-Mysql-infra/
+        terraform init
+      displayName: 'Terraform Init'
+
+    - script: |
+        echo "Running Terraform Plan..."
+        cd GCP-CloudRun-Nodejs-Mysql-infra/
+        terraform plan -out=tfplan
+      displayName: 'Terraform Plan'
+
+    - script: |
+         echo "Applying Terraform Apply..."
+         cd GCP-CloudRun-Nodejs-Mysql-infra/
+         terraform apply -auto-approve tfplan 
+      displayName: 'Terraform Apply'

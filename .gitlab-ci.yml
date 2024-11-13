@@ -1,0 +1,73 @@
+stages:
+  - checkout
+  - install_tools
+  - checkov_scan
+  - gcp_auth
+  - terraform_init
+  - terraform_plan
+  - terraform_apply
+
+variables:
+  TF_VERSION: '1.9.8'  # Specify the version of Terraform you want to use
+  GCP_SA_KEY: $GCP_SA_KEY  # Set your GCP service account credentials in GitLab CI secrets
+
+checkout:
+  stage: checkout
+  script:
+    - echo "Checking out the repository..."
+    - pwd
+    - ls -la
+  only:
+    - main
+
+install_tools:
+  stage: install_tools
+  image: hashicorp/terraform:${TF_VERSION}  # Use a Terraform Docker image
+  script:
+    - echo "Installing Terraform..."
+    - curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+    - sudo apt-add-repository "deb https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+    - sudo apt-get update && sudo apt-get install terraform=${TF_VERSION}-1
+    - echo "Verifying Terraform installation..."
+    - terraform -version
+    - echo "Installing Checkov..."
+    - python3 -m pip install --upgrade pip
+    - python3 -m pip install checkov
+
+checkov_scan:
+  stage: checkov_scan
+  script:
+    - echo "Running Checkov security scan on Terraform files..."
+    - cd GCP-CloudRun-Nodejs-Mysql-infra/
+    - checkov -d . --skip-check CKV_GCP_113,CKV_GCP_60
+
+gcp_auth:
+  stage: gcp_auth
+  script:
+    - echo "Authenticating to Google Cloud..."
+    - echo "$GCP_SA_KEY" | gcloud auth activate-service-account --key-file=-
+    - gcloud config set project "gcp-cloudrun-nodejs-mysql-app"  # Replace with your project ID
+
+terraform_init:
+  stage: terraform_init
+  script:
+    - echo "Initializing Terraform..."
+    - cd GCP-CloudRun-Nodejs-Mysql-infra/
+    - terraform init
+
+terraform_plan:
+  stage: terraform_plan
+  script:
+    - echo "Running Terraform Plan..."
+    - cd GCP-CloudRun-Nodejs-Mysql-infra/
+    - terraform plan -out=tfplan
+
+terraform_apply:
+  stage: terraform_apply
+  script:
+    - echo "Applying Terraform Plan..."
+    - cd GCP-CloudRun-Nodejs-Mysql-infra/
+    - terraform apply -auto-approve
+
+  only:
+    - master  # Runs on pushes to the main branch

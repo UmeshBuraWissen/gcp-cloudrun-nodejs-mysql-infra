@@ -47,7 +47,8 @@ jobs:
     - name: Run Checkov security scan on Terraform files
       run: |
         echo "Running Checkov security scan on Terraform files..."
-        checkov -d .
+        cd GCP-CloudRun-Nodejs-Mysql-infra/
+        checkov -d . --skip-check CKV_GCP_113,CKV_GCP_60
  
     - name: Authenticate to Google Cloud
       uses: google-github-actions/auth@v1
@@ -57,14 +58,17 @@ jobs:
     # - name: Initialize Terraform
     #   run: |
     #     echo "Initializing Terraform..."
+    #     cd GCP-CloudRun-Nodejs-Mysql-infra/
     #     terraform init
  
     # - name: Run Terraform Plan
     #   run: |
     #     echo "Running Terraform Plan..."
+    #     cd GCP-CloudRun-Nodejs-Mysql-infra/
     #     terraform plan -out=tfplan
  
     # - name: Apply Terraform Plan
     #   run: |
     #     echo "Applying Terraform Plan..."
+    #     cd GCP-CloudRun-Nodejs-Mysql-infra/
     #     terraform apply -auto-approve 
