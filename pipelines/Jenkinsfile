@@ -6,7 +6,8 @@ pipeline {
         GCP_PROJECT_ID = 'gcp-cloudrun-nodejs-mysql-app'      
         GCP_CREDENTIALS = credentials('gcp-service-account-key') 
         GIT_CREDENTIALS_ID = 'git-credentials-id'
-        GIT_REPO_URL = 'https://github.com/anitamaharana55/NodejsApp_GCP.git'
+        // GIT_REPO_URL = 'https://github.com/anitamaharana55/NodejsApp_GCP.git'
+        GIT_REPO_URL = 'https://github.com/UmeshBuraWissen/gcp-cloudrun-nodejs-mysql-infra.git'
         CLIENT_EMAIL='nodejsdemo@gcp-cloudrun-nodejs-mysql-app.iam.gserviceaccount.com'
     }
     stages {
