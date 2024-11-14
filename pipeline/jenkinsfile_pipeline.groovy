@@ -76,7 +76,7 @@ pipeline {
             steps {
                 sh '''
                 cd GCP-CloudRun-Nodejs-Mysql-infra
-                    terraform apply -auto-approve
+                    terraform destroy -auto-approve
                 '''
             }
         }
