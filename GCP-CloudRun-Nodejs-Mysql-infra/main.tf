@@ -90,18 +90,17 @@ module "cloudSql" {
   sql_name         = each.value["sql_name"]
   # database_version = each.value["database_version"]
   # settings = {
-  #    tier = each.value.settings["tier"]
+  tier = each.value["tier"]
   #   backup_configuration = {
-  #     enabled            = each.value.settings.backup_configuration["enabled"]
-  #     binary_log_enabled = veach.value.settings.backup_configuration["binary_log_enabled"]
+  enabled            = each.value["enabled"]
+  binary_log_enabled = each.value["binary_log_enabled"]
 
   #   }
     
   #   ip_configuration = {
-  #     ipv4_enabled    = each.value.settings.ip_configuration["ipv4_enabled"]
-  #     private_network = each.value.settings.ip_configuration["private_network"]
-  #     ssl_mode = each.value.settings.ip_configuration["ssl_mode"]
-  #     require_ssl = each.value.settings.ip_configuration["require_ssl"]
+      ipv4_enabled    = each.value["ipv4_enabled"]
+      ssl_mode = each.value["ssl_mode"]
+      require_ssl = each.value["require_ssl"]
   #   }
 
 

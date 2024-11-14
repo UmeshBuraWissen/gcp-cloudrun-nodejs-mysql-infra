@@ -93,15 +93,15 @@ sql_config = [
   priority  = 1000  
   source_ranges = ["0.0.0.0/0"]
   # settings = {
-  #   tier                = "db-f1-micro"
+  tier                = "db-f1-micro"
   # backup_configuration = {
-  #       enabled            = true
-  #     binary_log_enabled = true
+  enabled            = true
+  binary_log_enabled = true
   # }
   # ip_configuration = {
-  #     ipv4_enabled    = false
-  #           ssl_mode = "TRUSTED_CLIENT_CERTIFICATE_REQUIRED"
-  #     require_ssl = true
+  ipv4_enabled    = false
+  ssl_mode = "TRUSTED_CLIENT_CERTIFICATE_REQUIRED"
+  require_ssl = true
   # }
   # }
         import_custom_routes = true

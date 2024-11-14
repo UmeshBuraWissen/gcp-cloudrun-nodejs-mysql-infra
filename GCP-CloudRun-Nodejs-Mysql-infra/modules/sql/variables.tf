@@ -2,11 +2,9 @@ variable "sql_name" {
   type = string
 }
 
-# variable "settings" {
-#   type = object({
-#     tier = string
-#   })
-# }
+variable "tier" {
+  type = string
+}
 variable "deletion_protection" {
   type = bool
 }
@@ -67,21 +65,21 @@ variable "priority" {
 variable "source_ranges" {
   type = list(string)
 }
-# variable "enabled" {
-#   type = bool
-# }
-# variable "binary_log_enabled" {
-#   type = bool
-# }
-# variable "ipv4_enabled" {
-#   type = bool
-# }
-# variable "ssl_mode" {
-#   type = string
-# }
-# variable "require_ssl" {
-#   type = bool
-# }
+variable "enabled" {
+  type = bool
+}
+variable "binary_log_enabled" {
+  type = bool
+}
+variable "ipv4_enabled" {
+  type = bool
+}
+variable "ssl_mode" {
+  type = string
+}
+variable "require_ssl" {
+  type = bool
+}
 variable "import_custom_routes" {
   type = bool
 }

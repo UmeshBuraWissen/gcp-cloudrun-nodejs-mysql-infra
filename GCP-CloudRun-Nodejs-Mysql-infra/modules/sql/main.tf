@@ -39,20 +39,20 @@ resource "google_sql_database_instance" "instance" {
   database_version = "MYSQL_8_0" #var.database_version  #
    depends_on = [google_service_networking_connection.default]
   settings {
-    tier = "db-f1-micro"
+    tier = var.tier
     
 
     backup_configuration {
-      enabled            = true
-      binary_log_enabled = true
+      enabled            = var.enabled
+      binary_log_enabled = var.binary_log_enabled
 
     }
     
     ip_configuration {
-      ipv4_enabled    = false
+      ipv4_enabled    = var.ipv4_enabled
       private_network = google_compute_network.peering_network.id
-      ssl_mode = "TRUSTED_CLIENT_CERTIFICATE_REQUIRED"
-      require_ssl = true
+      ssl_mode = var.ssl_mode
+      require_ssl = var.require_ssl
     }
 
   }
