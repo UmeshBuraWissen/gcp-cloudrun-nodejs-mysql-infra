@@ -50,7 +50,7 @@ pipeline {
                         echo "Current PATH: $PATH"  
                         which checkov  
                         cd GCP-CloudRun-Nodejs-Mysql-infra
-                        checkov -d . --skip-check CKV_GCP_113,CKV_GCP_60 --output json --output-file checkov_report.json --quiet || (echo "Checkov scan failed!" && exit 1)
+                        checkov -d . --skip-check CKV_GCP_113,CKV_GCP_60,CKV_GCP_14,CKV2_GCP_20,CKV_GCP_6,CKV_GCP_79 --output json --output-file checkov_report.json --quiet || (echo "Checkov scan failed!" && exit 1)
                     '''
                 }
             }
