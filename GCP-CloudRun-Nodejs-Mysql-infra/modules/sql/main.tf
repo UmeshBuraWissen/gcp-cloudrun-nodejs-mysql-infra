@@ -49,8 +49,8 @@ resource "google_sql_database_instance" "instance" {
     }
     
     ip_configuration {
-      ipv4_enabled    = true
-      # private_network = google_compute_network.peering_network.id
+      ipv4_enabled    = false
+      private_network = google_compute_network.peering_network.id
       ssl_mode = "TRUSTED_CLIENT_CERTIFICATE_REQUIRED"
       require_ssl = true
     }
