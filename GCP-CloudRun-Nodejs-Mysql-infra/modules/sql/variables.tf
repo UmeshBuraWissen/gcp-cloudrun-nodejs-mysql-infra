@@ -24,9 +24,9 @@ variable "sql_user_pass" {
   description = "Login password of SQL database"
 }
 
-# variable "database_version" {
-#   type = string 
-# }
+variable "database_version" {
+  type = string 
+}
 variable "private-network-name" {
     type        = string
   description = "private-network-name"

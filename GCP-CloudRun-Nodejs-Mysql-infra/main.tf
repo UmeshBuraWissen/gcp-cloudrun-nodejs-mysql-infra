@@ -88,23 +88,13 @@ module "cloudSql" {
   location         = each.value["location"]
   project_id       = each.value["project_id"]
   sql_name         = each.value["sql_name"]
-  # database_version = each.value["database_version"]
-  # settings = {
+  database_version = each.value["database_version"]
   tier = each.value["tier"]
-  #   backup_configuration = {
   enabled            = each.value["enabled"]
   binary_log_enabled = each.value["binary_log_enabled"]
-
-  #   }
-    
-  #   ip_configuration = {
-      ipv4_enabled    = each.value["ipv4_enabled"]
-      ssl_mode = each.value["ssl_mode"]
-      require_ssl = each.value["require_ssl"]
-  #   }
-
-
-  # }
+  ipv4_enabled    = each.value["ipv4_enabled"]
+  ssl_mode = each.value["ssl_mode"]
+  require_ssl = each.value["require_ssl"]
   deletion_protection = each.value["deletion_protection"]
   sql_user_name       = each.value["sql_user_name"]
   sql_user_pass       = each.value["sql_user_pass"]
@@ -114,21 +104,13 @@ module "cloudSql" {
   purpose = each.value["purpose"]
   address_type = each.value["address_type"]
   prefix_length = each.value["prefix_length"]
-   service = each.value["service"]
-   firewall_name = each.value["firewall_name"]
-   protocol = each.value["protocol"]
-     direction = each.value["direction"]
+  service = each.value["service"]
+  firewall_name = each.value["firewall_name"]
+  protocol = each.value["protocol"]
+  direction = each.value["direction"]
   priority  = each.value["priority"]
   source_ranges = each.value["source_ranges"]
-
-  # backup_configuration = {
-  #       enabled            = each.value.backup_configuration["enabled"]
-  #     binary_log_enabled = each.value.backup_configuration["binary_log_enabled"]
-  # }
-  #     ipv4_enabled = each.value["ipv4_enabled"]
-      #       ssl_mode = each.value["ssl_mode"]
-      # require_ssl = each.value["require_ssl"]
-        import_custom_routes = each.value["import_custom_routes"]
+  import_custom_routes = each.value["import_custom_routes"]
   export_custom_routes = each.value["export_custom_routes"]
 }
 

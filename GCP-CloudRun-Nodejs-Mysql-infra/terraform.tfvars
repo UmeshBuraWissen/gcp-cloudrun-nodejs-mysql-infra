@@ -72,43 +72,34 @@ cloudrunsql_config = [
 ]
 sql_config = [
   {
-    location            = "us-central1"
-    project_id          = "gcp-cloudrun-nodejs-mysql-app"
-    sql_name            = "wissen-nodejs-app-gcp-mysql"
-    # database_version    = "MYSQL_8_0"
-    
-    deletion_protection = false
-    sql_user_name       = "nodejsuser"
-    sql_user_pass       = "Wissen12345"
+  location            = "us-central1"
+  project_id          = "gcp-cloudrun-nodejs-mysql-app"
+  sql_name            = "wissen-nodejs-app-gcp-mysql"
+  database_version    = "MYSQL_8_0"
+  deletion_protection = false
+  sql_user_name       = "nodejsuser"
+  sql_user_pass       = "Wissen12345"
   private-network-name                    = "private-network"
   auto_create_subnetworks = false
-    private-ip-address-name          = "private-ip-address"
+  private-ip-address-name          = "private-ip-address"
   purpose       = "VPC_PEERING"
   address_type  = "INTERNAL"
   prefix_length = 16
   service                 = "servicenetworking.googleapis.com"
   firewall_name    = "deny-all-ingress"
   protocol = "all"
-    direction = "INGRESS"
+  direction = "INGRESS"
   priority  = 1000  
   source_ranges = ["0.0.0.0/0"]
-  # settings = {
   tier                = "db-f1-micro"
-  # backup_configuration = {
   enabled            = true
   binary_log_enabled = true
-  # }
-  # ip_configuration = {
   ipv4_enabled    = false
   ssl_mode = "TRUSTED_CLIENT_CERTIFICATE_REQUIRED"
   require_ssl = true
-  # }
-  # }
-        import_custom_routes = true
+  import_custom_routes = true
   export_custom_routes = true
-  
-  
-  }
+ }
 ]
 secret_config = [{
   secret_id = "secret"
@@ -123,7 +114,7 @@ vpc_connector_config = [
   project_id    =  "gcp-cloudrun-nodejs-mysql-app"
   region        = "us-east1"
   name          = "wissen-nodejs-app-gcp-vpc-connector"
-  network       = "wissen-nodejs-app-gcp-vpc" #module.vpc.network_name
+  network       = "wissen-nodejs-app-gcp-vpc" 
   ip_cidr_range = "10.8.0.0/28"
   }
 ]
