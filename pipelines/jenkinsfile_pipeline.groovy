@@ -12,11 +12,8 @@ pipeline {
     stages {
         stage('Authenticate to GCP') {
             steps {
-                // Using the GCP service account key as a secret file
                 withCredentials([file(credentialsId: 'gcp-service-account-key', variable: 'GCP_KEY_FILE')]) {
                     script {
-
-                        // Authenticate using the secret file path
                         sh 'gcloud auth activate-service-account --key-file=$GCP_KEY_FILE'
                         sh 'gcloud config set project ${GCP_PROJECT_ID}'
                         sh 'gcloud auth list'
@@ -28,7 +25,6 @@ pipeline {
         }
         stage('Checkout Code') {
             steps {
-                // Cloning the repository
                 checkout([$class: 'GitSCM', 
                     branches: [[name: '*/main']],          
                     userRemoteConfigs: [[url: "${GIT_REPO_URL}", credentialsId: "${GIT_CREDENTIALS_ID}"]]
@@ -39,43 +35,34 @@ pipeline {
             steps {
                 script {
                     echo "Setting up Python virtual environment and installing Checkov..."
-
-            // Create the virtual environment
                     sh 'python3 -m venv venv'
-            
-            // Install pipx inside the virtual environment and ensure it's in PATH
                     sh '''
-                        . venv/bin/activate  # Activate the virtual environment
-                        pip install --upgrade pip    # Upgrade pip to the latest version
+                        . venv/bin/activate  
+                        pip install --upgrade pip    
                         pip install checkov
                     '''
-
-            // Verify the Checkov version
                     sh '''
-                        . venv/bin/activate  # Activate the virtual environment again
-                        checkov --version            # Verify checkov installation
+                        . venv/bin/activate  
+                        checkov --version            
                     '''
-
-            // Run Checkov scan with specific rules skipped
                     sh '''
-                        . venv/bin/activate  # Ensure the virtual environment is activated
-                        echo "Current PATH: $PATH"  # Debug: print the PATH to check if venv is in the path
-                        which checkov  # Debug: print the location of checkov
+                        . venv/bin/activate  
+                        echo "Current PATH: $PATH"  
+                        which checkov  
                         cd GCP-CloudRun-Nodejs-Mysql-infra
                         checkov -d . --skip-check CKV_GCP_113,CKV_GCP_60 --output json --output-file checkov_report.json --quiet || (echo "Checkov scan failed!" && exit 1)
                     '''
+                }
+            }
         }
-    }
-}
         stage('Terraform Init') {
             steps {
                 sh '''
                 cd GCP-CloudRun-Nodejs-Mysql-infra
                     terraform init -reconfigure
                 '''
-        }
             }
-        
+        }
         stage('Terraform Plan') {
             steps {
                 sh '''
@@ -89,7 +76,7 @@ pipeline {
             steps {
                 sh '''
                 cd GCP-CloudRun-Nodejs-Mysql-infra
-                    terraform destroy -auto-approve
+                    terraform apply -auto-approve
                 '''
             }
         }
