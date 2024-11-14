@@ -72,4 +72,7 @@ resource "google_compute_network_peering_routes_config" "peering_routes" {
   network              = google_compute_network.peering_network.name
   import_custom_routes = var.import_custom_routes
   export_custom_routes = var.export_custom_routes
+    depends_on = [
+    google_service_networking_connection.default
+  ]
 }
