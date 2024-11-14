@@ -67,7 +67,7 @@ steps:
   args:
   - '-c'
   - |
-      if [ -d "$_PATH_TF"]; then
+      if [ -d "$_PATH_TF" ]; then
          cd GCP-CloudRun-Nodejs-Mysql-infra/
          terraform $_TFACTION -auto-approve
       else
