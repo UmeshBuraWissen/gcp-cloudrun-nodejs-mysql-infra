@@ -17,7 +17,6 @@ resource "google_service_networking_connection" "default" {
   network                 = google_compute_network.peering_network.id
   service                 = var.service
   reserved_peering_ranges = [google_compute_global_address.private_ip_address.name]
-  depends_on = [ google_sql_database_instance.instance ]
 }
 resource "google_compute_firewall" "deny_all" {
   project = var.project_id
@@ -38,7 +37,7 @@ resource "google_sql_database_instance" "instance" {
   name             = var.sql_name
   region           = var.location
   database_version = var.database_version  
-  #  depends_on = [google_service_networking_connection.default]
+  depends_on = [google_service_networking_connection.default]
   settings {
     tier = var.tier
     
